@@ -246,6 +246,9 @@
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
   <script>
+    $(function() {
+       $("html, body").animate({ scrollTop: $("#services").offset().top }, 500);
+    });
   </script>
 
 </body>

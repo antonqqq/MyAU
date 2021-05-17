@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, redirect, session
 from flask import request
 from login import LoginForm
 from grades import GradeForm
-from scraper import Login, get_grades
+from scraper import Login
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '2898289899aA'
@@ -47,7 +47,7 @@ def grades():
     print(form2.sem.data)
     print(form2.sy.data)
     data = Login(session['username'], session['password'], form2.period.data, form2.sem.data, form2.sy.data)
-    return render_template('index.html', data = data, form2 = form2)
+    return render_template('grades.html', data = data, form2 = form2)
 
 if __name__ == '__main__':
     app.run()
