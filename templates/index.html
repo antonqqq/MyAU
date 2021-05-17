@@ -26,6 +26,7 @@
   <link href="{{ url_for('static', filename='vendor/remixicon/remixicon.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <!-- <link href="{{ url_for('static', filename='vendor/gridjs/gridjs.min.css') }}" rel="stylesheet"> -->
 
   <!-- Template Main CSS File -->
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
@@ -86,67 +87,132 @@
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="hero d-flex align-items-center">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-6 d-flex flex-column justify-content-center">
-          <!-- ======= Counts Section ======= -->
-          <section id="counts" class="counts">
-            <header class="section-header">
+      <div class="d-flex flex-column justify-content-center align-items-center">
+        <!-- ======= Counts Section ======= -->
+        <section id="counts" class="counts">
+          <header class="section-header">
+            <div class="container" data-aos="fade-up" data-aos-delay="200"> 
               <p>Payment Schedule</p>
-            </header>
-            <div class="container" data-aos="fade-up">
-              <div class="row gy-4">
-                <div class="col-lg-12 col-md-6">
-                  <div class="count-box">
-                    <h1 style="margin-right: 2rem;">1</h1>
-                    <div>
-                      <span data-purecounter-start="0" data-purecounter-end="{{ data['payment']['pr'] }}"
-                        data-purecounter-duration="2" data-purecounter-decimals="2" data-purecounter-separator="true"
-                        class="purecounter"></span>
-                      <p>Prelim</p>
+            </div>
+          </header>
+          <div class="container" data-aos="fade-up" data-aos-delay="400">
+            <div class="row gy-4">
+              <div class="">
+                <div class="count-box">
+                  <h1 style="margin-right: 2rem;">1</h1>
+                  <div>
+                    <span data-purecounter-start="0" data-purecounter-end="{{ data['payment']['pr'] }}"
+                      data-purecounter-duration="2" data-purecounter-decimals="2" data-purecounter-separator="true"
+                      class="purecounter"></span>
+                    <p>Prelim</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container" data-aos="fade-up" data-aos-delay="600">
+            <div class="">
+              <div class="count-box">
+                <h1 style="color: #ee6c20; margin-right: 2rem;">2</h1>
+                <div>
+                  <span data-purecounter-start="0" data-purecounter-end="{{ data['payment']['mr'] }}"
+                    data-purecounter-duration="2" data-purecounter-decimals="2" data-purecounter-separator="true"
+                    class="purecounter"></span>
+                  <p>Midterm</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container" data-aos="fade-up" data-aos-delay="900">
+            <div class="">
+              <div class="count-box">
+                <h1 style="color: #15be56; margin-right: 2rem;">3</h1>
+                <div>
+                  <span data-purecounter-start="0" data-purecounter-end="{{ data['payment']['fr'] }}"
+                    data-purecounter-duration="2" data-purecounter-decimals="2" data-purecounter-separator="true"
+                    class="purecounter"></span>
+                  <p>Final</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section><!-- End Counts Section -->
+      </div>
+      <!-- <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+        <img src="{{ url_for('static', filename='img/hero-img.png') }}" class="img-fluid" alt="">
+      </div> -->
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <p>Academic Performance</p>
+        </header>
+
+        <form action="{{ url_for('grades') }}" method="POST">
+            {{form2.csrf_token}}
+            <p>
+                {{form2.period.label}} 
+                {{form2.period}}
+                
+                {{form2.sem.label}} 
+                {{form2.sem}}
+
+                {{form2.sy.label}} 
+                {{form2.sy}}
+                
+                {{form2.submit}}</p>
+        </form>
+        
+        <div class="container">
+          <div class="row gy-5">
+            {% for i in range(0, data['grades'] | length)%}
+              <!-- Card 1 -->
+              <div class="col-md-4 card-container" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-flip">
+                  <!-- Card 1 Front -->
+                  <div class="card front">
+                    <div class="card-block">
+                      <h1 style="font-size: 72px;" class="card-title text-center">{{data['grades'][i][4]}}</h1>
+                      <h4 class="card-subtitle mb-2 text-muted text-center">{{data['grades'][i][0]}}</h4>
+                      <h6 class="card-subtitle mb-2 text-muted text-center">{{data['grades'][i][1]}}</h6>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div class="container" data-aos="fade-up" data-aos-delay="400">
-              <div class="col-lg-12 col-md-6">
-                <div class="count-box">
-                  <h1 style="color: #ee6c20; margin-right: 2rem;">2</h1>
-                  <div>
-                    <span data-purecounter-start="0" data-purecounter-end="{{ data['payment']['mr'] }}"
-                      data-purecounter-duration="2" data-purecounter-decimals="2" data-purecounter-separator="true"
-                      class="purecounter"></span>
-                    <p>Midterm</p>
+                  <!-- End Card 1 Front -->
+          
+                  <!-- Card 1 Back -->
+                  <div class="card back">
+                    <div class="card-block">
+                      <p>Instructor</p>
+                      <h6 class="card-subtitle mb-2 text-muted">{{data['grades'][i][3]}}</h6>
+                      <p>Credit</p>
+                      <h6 class="card-subtitle mb-2 text-muted">{{data['grades'][i][2]}}</h6>
+                      <p>Remarks</p>
+                      <h6 class="card-subtitle mb-2 text-muted">{{data['grades'][i][5]}}</h6>
+                    </div>
                   </div>
+                  <!-- End Card 1 Back -->
+                  
                 </div>
               </div>
-            </div>
-            <div class="container" data-aos="fade-up" data-aos-delay="600">
-              <div class="col-lg-12 col-md-6">
-                <div class="count-box">
-                  <h1 style="color: #15be56; margin-right: 2rem;">3</h1>
-                  <div>
-                    <span data-purecounter-start="0" data-purecounter-end="{{ data['payment']['fr'] }}"
-                      data-purecounter-duration="2" data-purecounter-decimals="2" data-purecounter-separator="true"
-                      class="purecounter"></span>
-                    <p>Final</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section><!-- End Counts Section -->
-        </div>
-        <!-- <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
-          <img src="{{ url_for('static', filename='img/hero-img.png') }}" class="img-fluid" alt="">
-        </div> -->
-      </div>
-    </div>
+              <!-- End Card 1 -->
+              {%endfor%}
 
-  </section><!-- End Hero -->
+          </div>
+        </div>
+        
+
+    </section><!-- End Services Section -->
+
+  </main>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  {{ url_for('static', filename='css/style.css') }}
   <!-- Vendor JS Files -->
   <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
@@ -155,9 +221,13 @@
   <script src="{{ url_for('static', filename='vendor/purecounter/purecounter.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <!-- <script src="{{ url_for('static', filename='vendor/gridjs/gridjs.production.min.js') }}"></script> -->
 
   <!-- Template Main JS File -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <script>
+  </script>
 
 </body>
 
