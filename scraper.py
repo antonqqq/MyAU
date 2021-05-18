@@ -113,7 +113,134 @@ def Login(username, password, period='Midterm', sem='2', sy='2020-2021'):
     return {
         'payment': payment,
         'grades': grade_data,
-        'clearance': clearance
+        'clearance': clearance,
     }
 
-# print(Login('aufantonq', 'antonquiambao'))
+def get_ledger(username, password):
+    s = requests.session()
+
+    def gen_data1():
+        unixtime = '_' + str(int(time.time()*1000))
+        data = {
+            'user_id2': 'secured',
+            'password2': 'secret',
+            unixtime : 'user',
+            'user_id': unixtime,
+            'body_color': '#9FBFD0',
+            'welcome_url': '../PARENTS_STUDENTS/main_files/login_success.htm',
+            'page_url': '../PARENTS_STUDENTS/main_files/parents_students_bottom_content.htm',
+            'login_type': 'parent_student',
+            'user_id3': 'secured',
+            'password3': 'secret'
+        }
+        return data
+
+    # print(gen_data1())
+
+    r = s.post('https://sblive.auf.edu.ph/schoolautomate/PARENTS_STUDENTS/main_files/login_new.jsp', data= gen_data1())
+    html = r.content
+    soup = BeautifulSoup(html, 'html.parser')
+    ol_lx = soup.find('input', {'name': 'ol_lx'})['value']
+
+    def gen_data2():
+        unixtime = '_' + str(int(time.time()*1000))
+        data = {
+        'ol_lx': ol_lx,
+        'user_id2': 'secured',
+        'password2': 'secret',
+        unixtime: username,
+        'user_id': unixtime,
+        unixtime+'0': password,
+        'password': unixtime+'0',
+        'is_secured': '1',
+        'body_color': '#9FBFD0',
+        'welcome_url': '../PARENTS_STUDENTS/main_files/login_success.htm',
+        'page_url': '../PARENTS_STUDENTS/main_files/parents_students_bottom_content.htm',
+        'login_type': 'parent_student',
+        'user_id3': 'secured',
+        'password3': 'secret'
+        }
+        return data
+
+    login = s.post('https://sblive.auf.edu.ph/schoolautomate/commfile/login.jsp', data = gen_data2())
+    request_ledger = s.get('https://sblive.auf.edu.ph/schoolautomate/PARENTS_STUDENTS/accounts/student_ledger.jsp')
+    html_ledger = request_ledger.content
+    soup_ledger = BeautifulSoup(html_ledger, 'html.parser')
+
+    ledger_data = []
+    ledger_table = soup_ledger.find('table', {'class': 'thinborder'})
+
+    # rows = ledger_table.find_all('tr')
+    # for row in rows[1:]:
+    #     cols = row.find_all('td')
+    #     cols = [ele.text for ele in cols]
+    #     ledger_data.append([ele for ele in cols if ele])
+
+    # if len(ledger_data[0]) != 6:
+    #     ledger_data[0] = ['\xa0', ledger_data[0][1], '\xa0', '\xa0', '\xa0', ledger_data[0][-1]]
+
+    return ledger_table
+
+def get_full_ledger(username, password):
+    s = requests.session()
+
+    def gen_data1():
+        unixtime = '_' + str(int(time.time()*1000))
+        data = {
+            'user_id2': 'secured',
+            'password2': 'secret',
+            unixtime : 'user',
+            'user_id': unixtime,
+            'body_color': '#9FBFD0',
+            'welcome_url': '../PARENTS_STUDENTS/main_files/login_success.htm',
+            'page_url': '../PARENTS_STUDENTS/main_files/parents_students_bottom_content.htm',
+            'login_type': 'parent_student',
+            'user_id3': 'secured',
+            'password3': 'secret'
+        }
+        return data
+
+    # print(gen_data1())
+
+    r = s.post('https://sblive.auf.edu.ph/schoolautomate/PARENTS_STUDENTS/main_files/login_new.jsp', data= gen_data1())
+    html = r.content
+    soup = BeautifulSoup(html, 'html.parser')
+    ol_lx = soup.find('input', {'name': 'ol_lx'})['value']
+
+    def gen_data2():
+        unixtime = '_' + str(int(time.time()*1000))
+        data = {
+        'ol_lx': ol_lx,
+        'user_id2': 'secured',
+        'password2': 'secret',
+        unixtime: username,
+        'user_id': unixtime,
+        unixtime+'0': password,
+        'password': unixtime+'0',
+        'is_secured': '1',
+        'body_color': '#9FBFD0',
+        'welcome_url': '../PARENTS_STUDENTS/main_files/login_success.htm',
+        'page_url': '../PARENTS_STUDENTS/main_files/parents_students_bottom_content.htm',
+        'login_type': 'parent_student',
+        'user_id3': 'secured',
+        'password3': 'secret'
+        }
+        return data
+
+    login = s.post('https://sblive.auf.edu.ph/schoolautomate/commfile/login.jsp', data = gen_data2())
+    request_ledger = s.get('https://sblive.auf.edu.ph/schoolautomate/PARENTS_STUDENTS/accounts/student_ledger.jsp')
+    html_ledger = request_ledger.content
+    soup_ledger = BeautifulSoup(html_ledger, 'html.parser')
+
+    student_id = soup_ledger.find('td', {'width': "37%"}).strong.text.strip()
+
+    request_full_ledger = s.get('https://sblive.auf.edu.ph/schoolautomate/PARENTS_STUDENTS/accounts/student_ledger_viewall.jsp?show_coursecode=1&stud_id=' + student_id)
+    html_full_ledger = request_full_ledger.content
+    soup_full_ledger = BeautifulSoup(html_full_ledger, 'html.parser')
+    
+    ledger_tables = soup_full_ledger.findAll('table', {'bgcolor': '#808080'})
+
+    return ledger_tables
+
+
+# print(get_full_ledger('aufantonq', 'antonquiambao'))

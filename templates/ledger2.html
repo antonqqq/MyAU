@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>AUF MyAU</title>
+  <meta content="" name="description">
+
+  <meta content="" name="keywords">
+
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  
+</head>
+
+<body>
+  <form action="{{url_for('home')}}">
+    <input type="submit" value="Go to Home" />
+  </form>
+  <p></p>
+  <form action="{{url_for('ledger')}}">
+    <input type="submit" value="Go to previous ledger" />
+  </form>
+  <p></p>
+  {% for i in data %}
+    <div>{{i | safe}}</div>
+  {%endfor%}
+</body>
+
+</html>

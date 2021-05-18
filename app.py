@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, redirect, session
 from flask import request
 from login import LoginForm
 from grades import GradeForm
-from scraper import Login
+from scraper import Login, get_full_ledger, get_ledger
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '2898289899aA'
@@ -24,13 +24,23 @@ def login():
 
 @app.route("/home")
 def home():
-    # try:
+    try:
         form2 = GradeForm()
         data = Login(session['username'], session['password'])
         return render_template('index.html', data = data, form2 = form2)
-    # except:
-    #     session.clear()
-    #     return redirect(url_for('login'))
+    except:
+        session.clear()
+        return redirect(url_for('login'))
+
+@app.route("/ledger")
+def ledger():
+    data = get_ledger(session['username'], session['password'])
+    return render_template('ledger.html', data=data)
+
+@app.route("/ledger2")
+def ledger2():
+    data = get_full_ledger(session['username'], session['password'])
+    return render_template('ledger2.html', data=data)
 
 @app.route("/logout")
 def logout():
